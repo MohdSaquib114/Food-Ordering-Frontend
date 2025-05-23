@@ -10,6 +10,7 @@ import {
   Shield,
 } from "lucide-react";
 import useAuth from "../../../hooks/useAuth";
+import api from "../../../config/api";
 
 export default function PaymentMethods() {
   const { user } = useAuth();
@@ -35,7 +36,7 @@ export default function PaymentMethods() {
 
   const fetchMethods = async () => {
     try {
-      const res = await axios.get("http://localhost:9000/api/payment-methods");
+      const res = await api.get("/payment-methods");
       setMethods(res.data);
     } catch (err) {
       console.error("Error fetching methods:", err);
@@ -68,10 +69,10 @@ export default function PaymentMethods() {
       };
 
       if (mode === "add") {
-        await axios.post("http://localhost:9000/api/payment-methods", payload);
+        await api.post("/payment-methods", payload);
       } else {
-        await axios.patch(
-          `http://localhost:9000/api/payment-methods/${editingId}`,
+        await api.patch(
+          `/payment-methods/${editingId}`,
           payload
         );
       }

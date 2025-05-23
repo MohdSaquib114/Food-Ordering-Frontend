@@ -3,6 +3,7 @@ import axios from "axios";
 import { ListStart, MapPin } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import useAuth from "../../../hooks/useAuth";
+import api from "../../../config/api";
 
 export default function Restaurants() {
   const [restaurants, setRestaurants] = useState([]);
@@ -16,7 +17,7 @@ export default function Restaurants() {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const res = await axios.get("http://localhost:9000/api/restaurants");
+        const res = await api.get("/restaurants");
         setRestaurants(res.data);
       } catch (err) {
         console.error("Failed to fetch restaurants:", err);
@@ -36,8 +37,8 @@ export default function Restaurants() {
     }
 
     try {
-      const res = await axios.get(
-        `http://localhost:9000/api/restaurants/${restaurant.id}/menu`
+      const res = await api.get(
+        `/restaurants/${restaurant.id}/menu`
       );
       setMenuItems(res.data);
       setSelectedRestaurant(restaurant);

@@ -3,6 +3,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronDown } from "lucide-react";
 import useAuth from "../../../hooks/useAuth";
+import api from "../../../config/api";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -15,11 +16,11 @@ export default function Orders() {
   const [isPaying,setPaying] = useState(false)
   const { user } = useAuth();
 
-  // Fetch orders
+
   useEffect(() => {
     setLoading(true);
-    axios
-      .get("http://localhost:9000/api/orders")
+    api
+      .get("/orders")
       .then((res) => setOrders(res.data))
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
@@ -27,8 +28,8 @@ export default function Orders() {
 
   // Fetch payment methods
   useEffect(() => {
-    axios
-      .get("http://localhost:9000/api/payment-methods")
+    api
+      .get("/payment-methods")
       .then((res) => {
         setPaymentMethods(res.data);
         if (res.data.length) setPaymentMethod(res.data[0].id);
@@ -59,7 +60,7 @@ export default function Orders() {
   const handleCancelOrder = async (orderId) => {
     setCancel(true);
     try {
-      await axios.patch(`http://localhost:9000/api/orders/${orderId}/cancel`);
+      await api.patch(`/orders/${orderId}/cancel`);
       setOrders((prev) =>
         prev.map((o) => (o.id === orderId ? { ...o, status: "CANCELLED" } : o))
       );
@@ -78,8 +79,8 @@ export default function Orders() {
   const handlePayment = async () => {
     setPaying(true)
     try {
-      const res = await axios.post(
-        `http://localhost:9000/api/orders/${selectedOrder.id}/checkout`,{paymentMethodId:paymentMethod}
+      const res = await api.post(
+        `/orders/${selectedOrder.id}/checkout`,{paymentMethodId:paymentMethod}
       );
       console.log(res)
       setOrders((prev) =>

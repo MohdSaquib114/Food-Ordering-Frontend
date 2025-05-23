@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Loader2, Minus, Plus, Trash2 } from "lucide-react";
 import useAuth from "../../../hooks/useAuth";
 import axios from "axios";
+import api from "../../../config/api";
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, setCart } = useAuth();
@@ -14,7 +15,7 @@ export default function Cart() {
   const handlePlaceOrder = async () => {
     setLoading(true);
     try {
-      await axios.post(`http://localhost:9000/api/orders`, { items: cart });
+      await api.post(`/orders`, { items: cart });
 
       setCart([]);
     } catch (error) {
@@ -50,13 +51,10 @@ export default function Cart() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-2xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Your Cart</h1>
           <p className="text-gray-600">{cart.length} items in your cart</p>
         </div>
-
-        {/* Cart Items */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-24">
           {cart.map((item, index) => (
             <div
@@ -74,7 +72,6 @@ export default function Cart() {
                     {item.description}
                   </p>
 
-                  {/* Quantity Controls */}
                   <div className="flex items-center space-x-4 mb-3">
                     <div className="flex items-center space-x-2">
                       <span className="text-sm text-gray-500">Quantity:</span>
@@ -109,7 +106,6 @@ export default function Cart() {
                     </span>
                   </div>
 
-                  {/* Action Buttons */}
                   <div className="flex space-x-3">
                     <button
                       onClick={() => removeFromCart(item.id)}
@@ -130,7 +126,6 @@ export default function Cart() {
             </div>
           ))}
 
-          {/* Total Section */}
           <div className="p-6 bg-gray-50 rounded-b-lg">
             <div className="flex justify-between items-center">
               <span className="text-lg font-semibold text-gray-900">Total</span>
@@ -141,7 +136,6 @@ export default function Cart() {
           </div>
         </div>
 
-        {/* Place Order Button - Fixed at bottom right */}
         <div className="fixed bottom-6 right-6">
           <button
             onClick={handlePlaceOrder}

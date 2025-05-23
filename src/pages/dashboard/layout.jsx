@@ -4,7 +4,7 @@ import useAuth from "../../hooks/useAuth";
 
 export default function DashboardLayout() {
   let navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const {  isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
     navigate("/");

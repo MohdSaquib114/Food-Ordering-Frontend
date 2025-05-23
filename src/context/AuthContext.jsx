@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "./context";
+import api from "../config/api";
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(
@@ -14,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const login = async (username, password, role) => {
-    const res = await axios.post("http://localhost:9000/api/auth/login", {
+    const res = await api.post("/auth/login", {
       username,
       password,
       role,
@@ -71,11 +72,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    } else {
-      delete axios.defaults.headers.common["Authorization"];
-    }
+ if (token) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  } else {
+    delete api.defaults.headers.common["Authorization"];
+  }
   }, [token]);
 
   return (
