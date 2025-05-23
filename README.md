@@ -59,7 +59,7 @@ npm install
 Create a `.env` file in the root of the project:
 
 ```
-VITE_API_URL=http://localhost:9000/api
+VITE_API_URL=http://localhost:9000
 ```
 
 Or use your deployed backend URL if hosted on Render, etc.
